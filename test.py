@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-import sys, yaml, json
+import sys, yaml
 
 YAML_NAME = "adventure.yaml"
 PROMPT = "> "
@@ -15,9 +13,10 @@ def set_location(tag):
             location = x[1]
             location["tag"] = tag
 
-def print_location():
-    print(location['description']['long'])
-    print_verbs()
+def print_location(long=True):
+    d = location['description']['long'] if long == True else location['description']['short']
+    print(d)
+    # print_verbs()
 
 def goto(location):
     set_location(location)
@@ -63,8 +62,12 @@ def play():
         raw = raw_input(PROMPT)
         if raw == 'quit':
             done = True
-        if raw == '?':
+        elif raw == '?':
             print_info()
+        elif raw == 'look':
+            print_location(long=False)
+        elif raw == 'words':
+            print_verbs()
         else:
             move(raw.strip())
 
