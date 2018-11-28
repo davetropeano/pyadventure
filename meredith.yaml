@@ -19,6 +19,8 @@ ROOMS:
         #NO: reread description
         NORTH: ROOM_START
         SOUTH: ROOM_COLORWHEEL
+    checks:
+        SOUTH: check_door
     items:
         - Sledge hammer 
 
