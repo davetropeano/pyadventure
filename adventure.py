@@ -101,9 +101,6 @@ def play():
         else:
             print("\nNo comprende hombre...")
 
-        
-        # execute_command(cmd)
-
 
 # ---- MAIN PROGRAM
 
