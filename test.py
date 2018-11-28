@@ -1,6 +1,6 @@
-import sys, yaml
+import sys, yaml, cmd
 
-YAML_NAME = "adventure.yaml"
+YAML_NAME = "meredith.yaml"
 PROMPT = "> "
 
 db = {}
@@ -49,7 +49,7 @@ def print_verbs():
     for t in location['travel']:
         s.extend(t['verbs'])
 
-    print ",".join(s)
+    print(",".join(s))
 
 def print_info():
     print(location)
@@ -59,7 +59,7 @@ def play():
 
     done = False
     while done == False:
-        raw = raw_input(PROMPT)
+        raw = input(PROMPT)
         if raw == 'quit':
             done = True
         elif raw == '?':
