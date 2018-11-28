@@ -1,111 +1,125 @@
 ROOMS:
-- ROOM_START:
-  Description: "You are walking outside on a cold, rainy, dark night. There are puddles everywhere but you cannot see."
-  Moves:
-    - NORTH: fall in puddle
-    - SOUTH: fall in puddle
-    - EAST: fall in puddle
-    - WEST: fall in puddle
-  Items: 
-    - Goggles
-    - Flippers
+  ROOM_START:
+    name: "Outside on a rainy night"
+    description: "You are walking outside on a cold, rainy, dark night. There are puddles everywhere but you cannot see well."
+    moves:
+        NORTH: ROOM_BACH1
+        SOUTH: ROOM_BACH1
+        EAST: ROOM_BACH1
+        WEST: ROOM_BACH1
+    items: 
+        - Goggles
+        - Flippers
 
-- ROOM_BACH:
-  Description: "You fall down the puddle and land in a bedroom. You find Johann Sebastian Bach sleeping peacefully in his room, with a key hanging around his neck. Wake him up and invite him to come along?"
-  Moves:
-    - YES: ask to open door with key
-    - NO: reread description
-    - NORTH: goto start room
-    - SOUTH: goto Color Wheel Room
-  Items:
-    - Sledge hammer 
+  ROOM_BACH1:
+    name: "Bach's Bedroom"
+    description: "You fall down the puddle and land in a bedroom. You find Johann Sebastian Bach sleeping peacefully in his room, with a key hanging around his neck. Wake him up and invite him to come along?"
+    moves:
+        #YES: ask to open door with key
+        #NO: reread description
+        NORTH: ROOM_START
+        SOUTH: ROOM_COLORWHEEL
+    items:
+        - Sledge hammer 
 
-- ROOM_COLORWHEEL:
-  Desciption: "You have come across a room with a large color wheel by the south door used to unlock it. The east door is unlocked. The only way to unlock the south door is for the color wheel to land on blue when it is spun. Take the chances?"
-  Moves:
-    - SOUTH: spin wheel, if color is blue, goto first math room
-    - EAST: goto Lion’s Den
-  Items:
-    - Wood
-    - Hammer
+  ROOM_COLORWHEEL:
+    name: "Colorwheel Room"
+    description: "You have come across a room with a large color wheel by the south door used to unlock it. The east door is unlocked. The only way to unlock the south door is for the color wheel to land on blue when it is spun. Take the chances?"
+    moves:
+        SOUTH: ROOM_MATH1 #spin wheel, if color is blue, goto first math room
+        EAST: ROOM_LIONSDEN #goto Lion’s Den
+    items:
+        - Wood
+        - Hammer
 
-- ROOM_MATH1:
-  Description: "You have entered a room with a grand piano in the northwest corner. The only way to exit is to solve ‘x+8=15’, the equation posted on the door. But you aren’t smart enough to solve it! Maybe Bach’s classical music can help you gain enough brain power to unlock the door."
-  Moves:
-    - NORTHWEST: play piano, solve equation
-    - SOUTH: goto Note Room if equation is solved
-  Items:
-    - nails
+  ROOM_MATH1:
+    name: "Fugue Room"
+    description: "You have entered a room with a grand piano in the northwest corner. The only way to exit is to solve ‘x+8=15’, the equation posted on the door. But you aren’t smart enough to solve it! Maybe Bach’s classical music can help you gain enough brain power to unlock the door."
+    moves:
+        NORTHWEST: ROOM_NONE #play piano, solve equation
+        SOUTH: ROOM_NOTE #goto Note Room if equation is solved
+    items:
+        - nails
 
-- ROOM_NOTE:
-  Description: "You have entered a room with a note and a riddle on the ground. You and Bach notice the door is 10 feet above the ground! Use the items in your inventory to build something to help you reach the door."
-  Moves:
-    - EAST: if box is built, goto Tamer’s Room
-  Items:
-    - Note: reads 8173
-    - Riddle: "What goes up when rain comes down?"
+  ROOM_NOTE:
+    name: "Bob the Builder's Room"
+    description: "You have entered a room with a note and a riddle on the ground. You and Bach notice the door is 10 feet above the ground! Use the items in your inventory to build something to help you reach the door."
+    moves:
+        EAST: ROOM_TAMER #if box is built, goto Tamer’s Room
+    items:
+        - Note # reads 8173
+        - Riddle # "What goes up when rain comes down?"
 
-- ROOM_TAMER:
-  Description: "You enter a room with a large lion taming tool in the middle of the floor. You notice there is a door to exit but no knob to open it. Use a tool in your inventory to help break down the door!"
-  Moves:
-    - NORTH: if sledge hammer is used, goto keypad room
-  Items:
-    - Lion taming tool
+  ROOM_TAMER:
+    name: "Lion Tamer Tools Room"
+    description: "You enter a room with a large lion taming tool in the middle of the floor. You notice there is a door to exit but no knob to open it. Use a tool in your inventory to help break down the door!"
+    moves:
+        NORTH: ROOM_KEYPAD #if sledge hammer is used, goto keypad room
+    items:
+        - Lion taming tool
 
-- ROOM_KEYPAD:
-    Description: "You enter a room with no items in it and a large keypad that can unlock the door with 4 digits next to the north door. The west door is already unlocked."
-    Moves:
-      - NORTH: if 8173 is entered, goto Riddle Room
-      - WEST: goto Lion’s Den
+  ROOM_KEYPAD:
+    name: "Breakout Room"
+    description: "You enter a room with no items in it and a large keypad that can unlock the door with 4 digits next to the north door. The west door is already unlocked."
+    moves:
+        NORTH: ROOM_RIDDLE #if 8173 is entered, goto Riddle Room
+        WEST: ROOM_LIONSDEN #goto Lion’s Den
 
-- ROOM_LIONS_DEN:
-    Description: "You have entered a dimly lit cave with twigs all over the ground. There is a door in the northeast corner. Bach accidentally steps on one and creates a loud noise, causing a pack of lions to come charging at you. What do you do?"
-    Moves:
-      - NORTHEAST: if lion taming tool is collected, use it to escape and goto Riddle Room
-      # If lion taming tool is not used: "YOU DIED! PLAY AGAIN?"
+  ROOM_LIONS_DEN:
+    name: "Lion's Den"
+    description: "You have entered a dimly lit cave with twigs all over the ground. There is a door in the northeast corner. Bach accidentally steps on one and creates a loud noise, causing a pack of lions to come charging at you. What do you do?"
+    moves:
+        NORTHEAST: ROOM_RIDDLE #if lion taming tool is collected, use it to escape and goto Riddle Room
+        # If lion taming tool is not used: "YOU DIED! PLAY AGAIN?"
 
-- ROOM_RIDDLE:
-    Description: "You enter a room with a large keypad by the north door with a 8-letter word to unlock it. Use an item in your inventory to help you solve it or go to the east door with no lock."
-    Moves:
-      - EAST: goto first puddle room
-      - NORTH: if riddle is correct (umbrella), then goto Second Math Room
-    Items:
+  ROOM_RIDDLE:
+    name: "Room Without a Name"
+    description: "You enter a room with a large keypad by the north door with a 8-letter word to unlock it. Use an item in your inventory to help you solve it or go to the east door with no lock."
+    moves:
+        EAST: ROOM_PUDDLE1 #goto first puddle room
+        NORTH: ROOM_MATH2 #if riddle is correct (umbrella), then goto Second Math Room
+    items:
       - Key 
 
-- ROOM_PUDDLE1:
-  Description: "You have found another puddle! Take the chance of finding the real world again? Use the items in your inventory to help you swim through! Note: If you exit the game now, Bach cannot exit with you and you will lose points from your final score."
-  Moves:
-    - NORTH: THE END
-    - SOUTH: THE END
-    - EAST: THE END
-    - WEST: THE END 
+  ROOM_PUDDLE1:
+    name: "Room With a Puddle"
+    description: "You have found another puddle! Take the chance of finding the real world again? Use the items in your inventory to help you swim through! Note: If you exit the game now, Bach cannot exit with you and you will lose points from your final score."
+    moves:
+        NORTH: ROOM_END
+        SOUTH: ROOM_END
+        EAST: ROOM_END
+        WEST: ROOM_END 
 
-- ROOM_MATH2: 
-  Description: "You have entered a room with a large bed, a grand piano in the southeast corner, and two doors to exit. The north door has an equation ‘12x+3=39’ to unlock it, but you aren’t smart enough to solve it! Use Bach’s classical music to give you enough brain power to unlock the door. The west door seems to be opened with a key."
-  Moves:
-    - WEST: if opened with key, goto Start Room, START OVER
-    - NORTH: if piano is played and equation is solved, goto Bach’s Second Bedroom
-  Items:
-    - Bed 
+  ROOM_MATH2: 
+    name: "Big Bedroom"
+    description: "You have entered a room with a large bed, a grand piano in the southeast corner, and two doors to exit. The north door has an equation ‘12x+3=39’ to unlock it, but you aren’t smart enough to solve it! Use Bach’s classical music to give you enough brain power to unlock the door. The west door seems to be opened with a key."
+    moves:
+        WEST: ROOM_START #if opened with key, goto Start Room, START OVER
+        NORTH: ROOM_BACH2 #if piano is played and equation is solved, goto Bach’s Second Bedroom
+    items:
+        - Bed 
 
-- ROOM_BACH2:
-  Description: "A note on the north door says the only way to exit the game safely is to leave by yourself and leave all items in your inventory that were found in the game behind. Use an item in your in your inventory to unlock the door, or exit using the east door to find another exit." 
-  Moves: 
-    - NORTH: if all inventory except goggles and flippers is gone, goto Third Puddle Room
-    - EAST: goto Second Puddle Room
+  ROOM_BACH2:
+    name: "Snooze Room"
+    description: "A note on the north door says the only way to exit the game safely is to leave by yourself and leave all items in your inventory that were found in the game behind. Use an item in your in your inventory to unlock the door, or exit using the east door to find another exit." 
+    moves: 
+        NORTH: ROOM_PUDDLE3 #if all inventory except goggles and flippers is gone, goto Third Puddle Room
+        EAST: ROOM_PUDDLE2
 
-- ROOM_PUDDLE2:
-  Description: "You have found another puddle! Take the chances of finding the real world again? Use an item in your inventory to help you swim through!"
-  Moves:
-    - NORTH: there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
-    - SOUTH: there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
-    - EAST: there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
-    - WEST: there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
+  ROOM_PUDDLE2:
+    name: "Fishy Room"
+    description: "You have found another puddle! Take the chances of finding the real world again? Use an item in your inventory to help you swim through!"
+    moves:
+        NORTH: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
+        SOUTH: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
+        EAST: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
+        WEST: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
 
-- ROOM_PUDDLE3:
-  Description: "You have found another puddle! Take the chances of finding the real world again? Use an item in your inventory to help you swim through!"
-  Moves:
-    - NORTH: CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
-    - SOUTH: CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
-    - EAST: CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
-    - WEST: CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
+  ROOM_PUDDLE3:
+    name: "Room of Infinite Answers"
+    description: "You have found another puddle! Take the chances of finding the real world again? Use an item in your inventory to help you swim through!"
+    moves:
+        NORTH: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
+        SOUTH: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
+        EAST: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
+        WEST: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
