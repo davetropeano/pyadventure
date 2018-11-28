@@ -1,12 +1,30 @@
 import yaml, sys
 
 current_location = {}
+previous_locations = []
+total_moves = 0
+
+def do_back():
+    global total_moves, current_location
+
+    # the first previous location will be an empty dictionary {}
+    # because when set_location() is called it pushes the current location
+    # and initially the current location is empty... 
+    # so to test for previous locations you know the len > 1
+    if len(previous_locations) > 1:
+        current_location = previous_locations.pop()
+        total_moves = total_moves+1
+        print_location()
+    else:
+        print("There is nowhere to go back to!")
 
 def set_location(room):
-    global current_location
+    global current_location, total_moves
 
     if room in world['ROOMS']:
+        previous_locations.append(current_location)
         current_location = world['ROOMS'][room]
+        total_moves = total_moves+1
     else:
         print("LOSER - this room %s doesn't exist!" % room)
 
@@ -92,6 +110,8 @@ def play():
         if cmd in DIRECTIONS:
             move(cmd)
 
+        elif cmd == 'back':
+            do_back()
         elif cmd == 'quit':
             raise SystemExit
         elif cmd == '?' or cmd == 'help':
