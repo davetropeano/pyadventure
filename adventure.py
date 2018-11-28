@@ -3,6 +3,7 @@ import yaml, sys
 current_location = {}
 previous_locations = []
 total_moves = 0
+bag = []
 
 def do_back():
     global total_moves, current_location
@@ -48,7 +49,9 @@ def print_location():
             print("%s: %s" % (direction, location["name"]))
     print('')
     if 'items' in current_location:
-        print("around you are " + ",".join(current_location['items']))
+        items = current_location['items']
+        if len(items):
+            print("This is what you see around you: " + ",".join(current_location['items']))
 
 def do_help():
     print("\nHELP!!!!!! -- to be defined later\n")
@@ -87,6 +90,41 @@ def get_command():
 
     return words[0], ' '.join(words[1:])
 
+def do_drop(obj):
+    global current_location, bag
+    if obj in bag:
+        current_location['items'].append(obj)
+        bag.remove(obj)
+        total_moves = total_moves+1
+    else:
+        print('ARGH! There is no %s in your bag!' % obj)
+
+def do_take(obj):
+    global current_location, bag, total_moves
+    if obj in current_location['items']:
+        bag.append(obj)
+        current_location['items'].remove(obj)
+        total_moves = total_moves+1
+    else:
+        print('ARGH! There is no %s to take around here!' % obj)
+
+def do_inventory():
+    print("\nLet's see... in your bag you have:")
+    if len(bag) == 0:
+        print("Nothing. Zip. Nada. Zilch. You don't have a single thing.")
+    else:
+        for item in bag:
+            print("\t" + item)
+
+def do_look(obj):
+    if obj:
+        if obj in bag:
+            print("I am looking at the %s" % obj)
+        else:
+            print("Ummmm... you don't have %s in your bag..." % obj)
+    else:
+        print_location()
+
 def play():
     done = False
 
@@ -112,6 +150,14 @@ def play():
 
         elif cmd == 'back':
             do_back()
+        elif cmd == 'take':
+            do_take(obj)
+        elif cmd == 'drop':
+            do_drop(obj)
+        elif cmd == 'inventory':
+            do_inventory()
+        elif cmd == 'look':
+            do_look(obj)
         elif cmd == 'quit':
             raise SystemExit
         elif cmd == '?' or cmd == 'help':
