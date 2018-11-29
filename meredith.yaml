@@ -1,15 +1,15 @@
+#YAML is defined as a human-readable data serialization language. It is used for many files where data will be stored or transmitted. It was used in this project to create an outline of the programmer's text adventure game, which was eventually imported into a game engine, created by the programmer, in order for the player to play the game. 
+
+
 ROOMS:
   ROOM_START:
     name: "Outside on a rainy night"
     description: "You are walking outside on a cold, rainy, dark night. There are puddles everywhere but you cannot see well."
     moves:
-        NORTH: ROOM_BACH1
-        SOUTH: ROOM_BACH1
-        EAST: ROOM_BACH1
-        WEST: ROOM_BACH1
+        JUMP: ROOM_BACH1 #goto Bach's Bedroom
     items: 
-        - Goggles
-        - Flippers
+        - goggles
+        - flippers
 
   ROOM_BACH1:
     name: "Bach's Bedroom"
@@ -17,111 +17,157 @@ ROOMS:
     moves:
         #YES: ask to open door with key
         #NO: reread description
-        NORTH: ROOM_START
-        SOUTH: ROOM_COLORWHEEL
+        NORTH: ROOM_START #goto Outside on a rainy night
+        SOUTH: ROOM_COLORWHEEL #goto Colorwheel Room
     checks:
-        SOUTH: check_door
+        SOUTH: check_Bach1_door
     items:
-        - Sledge hammer 
+        - sledge hammer
+        - key
 
   ROOM_COLORWHEEL:
     name: "Colorwheel Room"
     description: "You have come across a room with a large color wheel by the south door used to unlock it. The east door is unlocked. The only way to unlock the south door is for the color wheel to land on blue when it is spun. Take the chances?"
     moves:
+        NORTH: ROOM_BACH1 #goto Bach's Bedroom
         SOUTH: ROOM_MATH1 #spin wheel, if color is blue, goto first math room
-        EAST: ROOM_LIONSDEN #goto Lion’s Den
+        EAST: ROOM_LIONS_DEN #goto Lion’s Den
+    checks:
+        SOUTH: check_colorwheel
     items:
-        - Wood
-        - Hammer
+        - wood
+        - hammer
 
   ROOM_MATH1:
     name: "Fugue Room"
-    description: "You have entered a room with a grand piano in the northwest corner. The only way to exit is to solve ‘x+8=15’, the equation posted on the door. But you aren’t smart enough to solve it! Maybe Bach’s classical music can help you gain enough brain power to unlock the door."
+    description: "You have entered a room with a grand piano in the northwest corner. The only way to exit is to solve 'x+8=15', the equation posted on the door. But you aren't smart enough to solve it! Maybe Bach's classical music can help you gain enough brain power to unlock the door."
     moves:
-        NORTHWEST: ROOM_NONE #play piano, solve equation
+        NORTH: ROOM_COLORWHEEL #goto Colorwheel Room
+       #NORTHWEST: PROP_PIANO #play piano, solve equation
         SOUTH: ROOM_NOTE #goto Note Room if equation is solved
+    checks:
+        SOUTH: check_fugue
     items:
         - nails
 
   ROOM_NOTE:
     name: "Bob the Builder's Room"
-    description: "You have entered a room with a note and a riddle on the ground. You and Bach notice the door is 10 feet above the ground! Use the items in your inventory to build something to help you reach the door."
+    description: "You gained enough brain power to solve the problem and have entered a room with a note that reads 8173, and a riddle on the ground. The riddle says, 'What goes up when rain comes down?' You and Bach notice the door is 10 feet above the ground! Use the items in your inventory to build something to help you reach the door."
     moves:
+        NORTH: ROOM_MATH1 #goto Fugue Room
         EAST: ROOM_TAMER #if box is built, goto Tamer’s Room
+    checks:
+        EAST: check_box
     items:
-        - Note # reads 8173
-        - Riddle # "What goes up when rain comes down?"
+        - note #reads 8173
+        - riddle #"What goes up when rain comes down?"
 
   ROOM_TAMER:
     name: "Lion Tamer Tools Room"
     description: "You enter a room with a large lion taming tool in the middle of the floor. You notice there is a door to exit but no knob to open it. Use a tool in your inventory to help break down the door!"
     moves:
+        WEST: ROOM_NOTE #goto Bob the Builder's Room
         NORTH: ROOM_KEYPAD #if sledge hammer is used, goto keypad room
+    checks:
+        NORTH: check_break
     items:
-        - Lion taming tool
+        - lion taming tool
 
   ROOM_KEYPAD:
     name: "Breakout Room"
     description: "You enter a room with no items in it and a large keypad that can unlock the door with 4 digits next to the north door. The west door is already unlocked."
     moves:
+        SOUTH: ROOM_TAMER #goto Lion Tamer's Room
         NORTH: ROOM_RIDDLE #if 8173 is entered, goto Riddle Room
-        WEST: ROOM_LIONSDEN #goto Lion’s Den
+        WEST: ROOM_LIONS_DEN #goto Lion’s Den
+    checks:
+        NORTH: check_riddle
+        WEST: check_lions_den
 
   ROOM_LIONS_DEN:
     name: "Lion's Den"
     description: "You have entered a dimly lit cave with twigs all over the ground. There is a door in the northeast corner. Bach accidentally steps on one and creates a loud noise, causing a pack of lions to come charging at you. What do you do?"
     moves:
-        NORTHEAST: ROOM_RIDDLE #if lion taming tool is collected, use it to escape and goto Riddle Room
+        EAST: ROOM_KEYPAD #goto Breakout Room
+        NORTHEAST: ROOM_RIDDLE #if lion taming tool is collected, use it to escape and goto Room Without a Name
         # If lion taming tool is not used: "YOU DIED! PLAY AGAIN?"
+    checks:
+        EAST: check_lions_den
+        NORTHEAST: check_lions_den
 
   ROOM_RIDDLE:
     name: "Room Without a Name"
     description: "You enter a room with a large keypad by the north door with a 8-letter word to unlock it. Use an item in your inventory to help you solve it or go to the east door with no lock."
     moves:
+        SOUTHWEST: ROOM_LIONS_DEN #goto Lion's Den
         EAST: ROOM_PUDDLE1 #goto first puddle room
         NORTH: ROOM_MATH2 #if riddle is correct (umbrella), then goto Second Math Room
+    checks:
+        NORTH: check_math2
     items:
-      - Key 
+        - key 
 
   ROOM_PUDDLE1:
     name: "Room With a Puddle"
     description: "You have found another puddle! Take the chance of finding the real world again? Use the items in your inventory to help you swim through! Note: If you exit the game now, Bach cannot exit with you and you will lose points from your final score."
     moves:
-        NORTH: ROOM_END
-        SOUTH: ROOM_END
-        EAST: ROOM_END
-        WEST: ROOM_END 
-
+        JUMP: ROOM_END
+        WEST: ROOM_RIDDLE
+    checks:
+        JUMP: check_puddle1
+        
   ROOM_MATH2: 
     name: "Big Bedroom"
-    description: "You have entered a room with a large bed, a grand piano in the southeast corner, and two doors to exit. The north door has an equation ‘12x+3=39’ to unlock it, but you aren’t smart enough to solve it! Use Bach’s classical music to give you enough brain power to unlock the door. The west door seems to be opened with a key."
+    description: "You have entered a room with a large bed, a grand piano in the southeast corner, and two doors to exit. The north door has an equation '12x+3=39' to unlock it, but you aren't smart enough to solve it! Use Bach's classical music to give you enough brain power to unlock the door. The west door seems to be opened with a key."
     moves:
+        SOUTH: ROOM_RIDDLE #goto Room Without a Name
         WEST: ROOM_START #if opened with key, goto Start Room, START OVER
         NORTH: ROOM_BACH2 #if piano is played and equation is solved, goto Bach’s Second Bedroom
+    checks:
+        NORTH: check_fugue
     items:
-        - Bed 
+        - bed 
 
   ROOM_BACH2:
     name: "Snooze Room"
     description: "A note on the north door says the only way to exit the game safely is to leave by yourself and leave all items in your inventory that were found in the game behind. Use an item in your in your inventory to unlock the door, or exit using the east door to find another exit." 
-    moves: 
+    moves:
+        SOUTH: ROOM_MATH2 #goto Big Bedroom
         NORTH: ROOM_PUDDLE3 #if all inventory except goggles and flippers is gone, goto Third Puddle Room
-        EAST: ROOM_PUDDLE2
+        EAST: ROOM_PUDDLE2 #goto Fishy Room
 
   ROOM_PUDDLE2:
     name: "Fishy Room"
     description: "You have found another puddle! Take the chances of finding the real world again? Use an item in your inventory to help you swim through!"
     moves:
-        NORTH: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
-        SOUTH: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
-        EAST: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
-        WEST: ROOM_DEAD #there were piranhas in the water that ate you alive. You made it back to the real world, but YOU DIED! PLAY AGAIN?
+        JUMP: ROOM_DEAD
 
   ROOM_PUDDLE3:
     name: "Room of Infinite Answers"
     description: "You have found another puddle! Take the chances of finding the real world again? Use an item in your inventory to help you swim through!"
     moves:
-        NORTH: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
-        SOUTH: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
-        EAST: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
-        WEST: ROOM_END #CONGRATULATIONS! YOU HAVE MADE IT BACK TO THE REAL WORLD SAFELY! PLAY AGAIN?
+        JUMP: ROOM_END
+    checks:
+        JUMP: check_puddle3
+  
+  ROOM_END:
+    name: "The End"
+    description: "Congratulations! You have made it back to the real world safely! Play Again?"
+    moves:
+        RESTART: ROOM_START #GAME OVER
+    checks:
+        RESTART: restart
+
+  ROOM_DEAD:
+      name: "Deep Dark Dank Sea of Misery"
+      description: "One small leap for mankind... and you're dead. Sorry. The deep, dark, dank sea of misery is filled with pirhannas. And they were hungry. Thanks for feeding the fishies. Game Over! Play Again?"
+      moves:
+        RESTART: ROOM_START
+      checks:
+        RESTART: restart
+          
+  #PROP_PIANO:
+     # name: "Piano"
+     # description: "You have led Bach to the piano. Allow him to play his symphonies in order to gain enough brain power to solve the math problem!"
+     # moves:
+         # PLAY: ROOM_NOTE #goto Bob the Builder's Room if piano is played
