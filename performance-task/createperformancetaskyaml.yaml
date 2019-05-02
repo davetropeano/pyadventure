@@ -1,0 +1,218 @@
+#YAML is defined as a human-readable data serialization language. It is  used for many files where data will be stored or transmitted. It was used in this project to create an outline of the programmer's text adventure game, which was eventually imported into a game engine, created by the programmer, in order for the player to play the game.
+
+
+ROOMS:
+    ROOM_START:
+        name: "Outside on a dark night"
+        description: "The year is 2019. You are walking outside in a forest in an attempt to clear your head after a stressful day at as an engineer at work, but you seem to be lost."
+        moves:
+            EAST: ROOM_DEADEND
+            SOUTH: ROOM_INTERSECTION
+            
+    ROOM_DEADEND:
+        name: "Dead end"
+        description: "You have reached a dead end. You found a pair of night goggles. Pick it up?"
+        moves:
+            WEST: ROOM_START
+        items:
+            - goggles
+    
+    ROOM_INTERSECTION:
+        name: "A spooky intersection"
+        description: "You have come to an intersection. Use an item in your inventory to help pick where to go!"
+        moves:
+            EAST: ROOM_DEAD1
+            SOUTH: ROOM_FOG
+            NORTH: ROOM_START
+        checks:
+            EAST: check_fog_sign
+    
+    ROOM_DEAD1:
+        name: "A  Not-So Cowardly Coyote's Victory"
+        description: "Oh no! You misread the sign and accidentally ran into a pack of coyotes. They were really hungry. But someone had to feed them. Game Over!"
+        moves:
+            RESTART: ROOM_START
+        checks:
+            RESTART: restart
+    
+    ROOM_FOG:
+        name: "The Deep Dark Dank Forest-y Fog"
+        description: "It is pitch black and your night goggles aren't working anymore. It seems like a strange fog is settling in. You trip over what feels like a key, pick it up, and then pass out!"
+        moves:
+            SOUTH: ROOM_BEDROOM
+        items:
+            - key
+    
+    ROOM_BEDROOM:
+        name: "Dr. Smith's Bedroom"
+        description: "You wake up in a weird room. It smells funny. You find a mysterious note on your nightstand. It has the numbers 3927 on it. Pick it up?"
+        moves:
+            SOUTH: ROOM_OUTSIDE
+        items:
+            - note
+    
+    ROOM_OUTSIDE:
+        name: "Outside in a Unknown Town"
+        description: "You walk outside, and realize everyone is wearing really outdated clothing, and keeps calling you Dr. Smith. But that's not your name..."
+        moves:
+            NORTH: ROOM_BEDROOM
+            SOUTH: ROOM_TOWNHALL
+    
+    ROOM_TOWNHALL:
+        name: "The Town Hall"
+        description: "You find the town hall building, and see that the calendar on the wall says the date is January 28th, 1986. Pick up the calendar?"
+        moves:
+            NORTH: ROOM_TVS
+            SOUTH: ROOM_TVS
+            EAST: ROOM_TVS
+            WEST: ROOM_TVS
+        items:
+            - calendar
+        checks:
+            NORTH: check_calendar
+            SOUTH: check_calendar
+            EAST: check_calendar
+            WEST: check_calendar
+            
+    ROOM_JAIL:
+        name: "The Doghouse"
+        description: "When you took the calendar from the town hall the police saw you and arrested you. The jury was mean and gave you prison for life. Game Over!"
+        moves:
+            RESTART: ROOM_START
+        checks:
+            RESTART: restart
+            
+    ROOM_TVS:
+        name: "The News Wall"
+        description: "As you continue walking, you see a wall of TVs on the news talking about a new space shuttle that will be launched later in the morning. You are intrigued, but have to find out what's going on and why you're in a different year all of a sudden."
+        moves:
+            NORTH: ROOM_TOWNHALL
+            SOUTH: ROOM_OUTNASA
+    
+    ROOM_OUTSIDE2:
+        name: "Outside of a Mysterious Building"
+        description: "You find a building with 'Dr. Smith' printed on it. The only way to get in is to use a key. Use an item in your inventory to open the door!"
+        moves:
+            NORTH: ROOM_TVS
+            EAST: ROOM_LOBBY
+        checks:
+            EAST: check_key
+    
+    ROOM_LOBBY:
+        name: "The Busy Bustling Office"
+        description: "You walk into the building to see everyone going crazy. You find out the time is 7:36 pm, and you are in Cape Canaveral, Florida. The Space Shuttle Challenger is scheduled to launch today."
+        moves:
+            NORTH: ROOM_SMITHOFFICE
+            WEST: ROOM_TVS
+    
+    ROOM_SMITHOFFICE:
+        name: "Dr. Smith's Office"
+        description: "You walk into your office and find blueprints for the Challenger. Pick it up?"
+        moves:
+            NORTH: ROOM_BOOKSHELF
+            EAST: ROOM_SAFE
+            SOUTH: ROOM_LOBBY
+        items:
+            - blueprints
+            
+    ROOM_BOOKSHELF:
+        name: "The Sparse Bookshelf"
+        description: "There is a long bookshelf on the wall, but there is only one notebook on it. Inside you find Dr. Smith's description, which states that he is one of the top engineers at NASA behind the Space Shuttle Challenger. You're still confused how you ended up here."
+        moves:
+            NORTH: ROOM_BOSSOFFICE
+            SOUTH: ROOM_SMITHOFFICE
+            
+    ROOM_SAFE:
+        name: "The Creepy Looking Safe"
+        description: "There is a safe in the corner of your office that can only be opened with a 4 digit code. Use an item in your inventory to open the safe!"
+        moves:
+            WEST: ROOM_SMITHOFFICE
+            NORTH: ROOM_INSIDESAFE
+        checks:
+            check_note
+            
+    ROOM_INSIDESAFE:
+        name: "Inside the Creepy Looking Safe"
+        description: "In the safe you find a paper stating that the O-rings will break if they reach a certain cold temperature. This concerns you. Pick it up?"
+        moves:
+            SOUTH: ROOM_SMITHOFFICE
+            WEST: ROOM_BOSSOFFICE
+        items:
+            - document
+    
+    ROOM_BOSSOFFICE:
+        name: "The Big Guy's Office"
+        description: "You walk into your boss's office. He looks at you, annoyed, like you haven't given him the papers you promised to last week."
+        moves:
+            NORTH: ROOM_CAR
+            SOUTH: ROOM_SMITHOFFICE
+        checks:
+            check_document
+    
+    ROOM_CAR:
+        name: "Dr. Smith's Car"
+        description: "You feel a strange sense of relief after you give your boss the document you found in the safe. You get in your car and drive to the launch site. You find a camera in your car. Pick it up?"
+        moves:
+            NORTH: ROOM_LAUNCHSITE
+            SOUTH: ROOM_BOSSOFFICE
+        items:
+            - camera
+    
+    ROOM_LAUNCHSITE:
+        name: "The Space Shuttle Challenger Launch Site"
+        description: "You arrive at the launch site, and ask your boss if he looked at the papers. He says no. Tell him to look at them immediately?"
+        moves:
+            YES: ROOM_HAPPYEND
+            NO: ROOM_SADEND
+    
+    ROOM_HAPPYEND:
+        name: "The Space Shuttle Challenger Launch Site"
+        description: "He tells you he looked at the papers and that the shuttle will no longer launch today because it would not be a successful launch if it did. He thanks you for the papers, and says you saved 7 people's lives today."
+        moves:
+            NORTH: ROOM_END
+            SOUTH: ROOM_END
+            EAST: ROOM_END
+            WEST: ROOM_END
+    
+    ROOM_SADEND:
+        name: "The Space Shuttle Challenger Launch Site"
+        description: "He tells you he did not get a chance to look at the papers and he is sure every thing will be fine, and assures you not to worry. A sense of worry washes over you when he assures you again everything will be okay. You walk away feeling nervous, and notice it is 10:30 am."
+        moves:
+            NORTH: ROOM_CAMERA
+            SOUTH: ROOM_LAUNCHSITE
+    
+    ROOM_CAMERA:
+        name: "The Challenger Setup"
+        description: "Your boss tells you to use your camera to take pictures of the launch. Use an item in your inventory to record!"
+        moves:
+            NORTH: ROOM_MALFUNCTION
+            SOUTH: ROOM_SADEND
+        checks:
+            check_camera
+    
+    ROOM_MALFUNCTION:
+        name: "The Challenger Disaster"
+        description: "You get ready for take off as the crowd starts to pour in. You can't help but feel nervous. It is 11:36 am, and time for take off. The shuttle takes off, and the crowd screams in joy of seeing the first teacher go into space. But, in a horrible malfunction with the O-rings and the cold temperature, the Challenger explodes in the air in front of America, killing the 7 people on board. Your boss looks over at you, and nods his head, indicating he should have listened to you."
+        moves:
+            NORTH: ROOM_END
+            SOUTH: ROOM_END
+            EAST: ROOM_END
+            WEST: ROOM_END
+    
+    ROOM_END:
+        name: "One Big Dream"
+        description: "You wake up in a cold sweat in the forest. You soon realize that it was all a dream, and get up and walk home to get some rest. GAME OVER."
+        moves:
+            RESTART: ROOM_START
+        checks:
+            RESTART: restart
+            
+    
+    
+        
+    
+    
+    
+    
+        
+            
