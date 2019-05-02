@@ -237,5 +237,5 @@ def initialize_game():
     bag = [] 
 
 initialize_game()
-set_location('ROOM_CAR')
+set_location('ROOM_START')
 play()  
