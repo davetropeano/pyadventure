@@ -67,11 +67,11 @@ def do_take(obj):
     if obj in current_location['items']:
         bag.append (obj)
         current_location['items'].remove (obj)
-        inventory()
+        inventory(obj)
     else:
         print("\nHey! That item is not here.\n")
         
-def inventory():
+def inventory(obj):
     if len(bag) > 0: 
         print("\nYou have the following in your bag:")
         for item in bag:
@@ -83,7 +83,7 @@ def do_drop(obj):
     if obj in bag: 
         bag.remove (obj)
         current_location['items'].append (obj)
-        inventory() 
+        inventory(obj) 
     else:
         print("\nWhat'chu talking bout Willis? I don't have that.\n") 
     
@@ -110,6 +110,7 @@ def check_key():
         bag.remove("key")
         return True
     else:
+        print("\nSeems like you don't have what you need...\n")
         return False
 
 def check_document():
@@ -212,6 +213,8 @@ def play():
             do_take(obj)
         elif cmd == "drop":
             do_drop(obj)
+        elif cmd == "inventory":
+            inventory(obj)
         else:
             print("\nNo comprende hombre...")
             
@@ -225,13 +228,14 @@ def restart():
 def initialize_game():
     global world, bag
     
-    YAML_FILE = "createperformancetaskyaml.yaml"
+    YAML_FILE = "world.yaml"
     with open(YAML_FILE, "r") as f:
+        
         world = yaml.load(f)
     f.close()
 
     bag = [] 
 
 initialize_game()
-set_location('ROOM_START')
+set_location('ROOM_CAR')
 play()  
